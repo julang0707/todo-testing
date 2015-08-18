@@ -8,7 +8,7 @@ let TodoModel = Backbone.Model.extend({
     completed: false
   },
 
-  toggle: function(){
+  toggle: function() {
     this.set({
       completed: !this.get('completed')
     });

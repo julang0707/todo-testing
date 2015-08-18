@@ -19,7 +19,6 @@ let ListView = Backbone.View.extend({
   },
 
   filterOne: function(todo) {
-    console.log('filter one');
     todo.trigger('visible', this.filter);
   },
 
@@ -30,7 +29,7 @@ let ListView = Backbone.View.extend({
     }, this);
   },
 
-  addOne: function(todo){
+  addOne: function(todo) {
     var view = new TodoView({model: todo});
     this.$el.append(view.render().el);
 

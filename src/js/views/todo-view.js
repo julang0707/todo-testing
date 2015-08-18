@@ -25,7 +25,7 @@ let TodoView = Backbone.View.extend({
     'keyup .edit': 'onEnter'
   },
 
-  initialize: function(){
+  initialize: function() {
     this.listenTo(this.model, 'destroy', this.remove);
     this.listenTo(this.model, 'change:title', this.render);
     this.listenTo(this.model, 'visible', this.toggleVisible);
@@ -40,17 +40,17 @@ let TodoView = Backbone.View.extend({
     this.model.toggle();
   },
 
-  onDestroy: function(event){
+  onDestroy: function(event) {
     if (confirm('Are you sure you want to delete ' + this.model.get('title') + '?')) {
       this.model.destroy();
     }
   },
 
-  onEdit: function(){
+  onEdit: function() {
     this.$el.addClass('editing');
   },
 
-  onClose: function(){
+  onClose: function() {
     var $edit = this.$('.edit');
     var title = $edit.val();
     var trimmedTitle = title.trim();
@@ -68,7 +68,7 @@ let TodoView = Backbone.View.extend({
     this.$el.removeClass('editing');
   },
 
-  onEscape: function(event){
+  onEscape: function(event) {
     var ESC_KEY = 27;
     if (event.keyCode === ESC_KEY) {
       var $edit = $(event.target);
@@ -77,7 +77,7 @@ let TodoView = Backbone.View.extend({
     }
   },
 
-  onEnter: function(event){
+  onEnter: function(event) {
     var ENTER_KEY = 13;
 
     if (event.keyCode === ENTER_KEY) {
@@ -85,11 +85,11 @@ let TodoView = Backbone.View.extend({
     }
   },
 
-  toggleVisible: function(filter){
+  toggleVisible: function(filter) {
     this.$el.toggleClass('hidden', this.isHidden(filter));
   },
 
-  isHidden: function(filter){
+  isHidden: function(filter) {
     if (this.model.get('completed')) {
       return filter === 'active' // true or false
     }

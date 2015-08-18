@@ -2,62 +2,50 @@ import jQuery from 'jquery';
 import {_} from 'underscore';
 
 import TodoCollection from '../../src/js/collections/todos';
-import ListView from '../../src/js/views/list-view';
+import TodoView from '../../src/js/views/todo-view';
 import TodoModel from '../../src/js/models/todo';
 
-describe('ListView', function(){
+describe('TodoView', function(){
   beforeEach(function(){
-    this.collection = new TodoCollection();
-
-    this.view = new ListView({
-      collection: this.collection
+    this.model = new TodoModel({
+      title: 'Julie writes test',
+      completed: false
     });
-
+    this.view = new TodoView({
+      model: this.model
+    });
     this.view.render();
   });
 
-  it('should render a single TodoView', function(){
-    let title = 'Will heals from surgery';
-    let model = new TodoModel({
-      title: title
-    });
-
-    this.view.addOne(model);
-
-    expect(this.view.$('.view').length).toEqual(1);
-    expect(this.view.$('.view label').text()).toEqual(title);
+  it('should return the Todo item', function() {
+    expect(this.view.render()).toEqual(this.view);
   });
 
-  it('should call addOne() and render a single TodoView when add event is called on the collection', function(){
-    let title = 'Will heals from surgery';
-    this.collection.add({
-      title: title
-    });
-
-    expect(this.view.$('.view').length).toEqual(1);
-    expect(this.view.$('.view label').text()).toEqual(title);
+  it('Should be tied to a DOM element when created, based off the property provided.', function() {
+      expect(this.view.el.tagName.toLowerCase()).toBe('li');
   });
 
-  it('addAll() should render a TodoView for every TodoModel in the collection', function(){
-    let title = 'Will heals from surgery';
-    let title2 = 'and give him some pain meds, too';
+  it('onToggle() should toggle the state of the Todo item when clicked', function() {
+    let e = jQuery.Event('click', 'checked');
 
-    this.collection.set(
-      [
-        {
-          title: title
-        },
+    this.view.trigger(e);
 
-        {
-          title: title2
-        }
-      ]
-    );
+    // this.view.$('.toggle').trigger('click');
+    expect(this.view.model.get('completed')).toBe(true);
 
-    this.view.addAll();
+  });
 
-    expect(this.view.$('.view').length).toEqual(2);
-    expect(this.view.$('.view label')[0].innerText).toEqual(title);
-    expect(this.view.$('.view label')[1].innerText).toEqual(title2);
+  it('onDestroy() should destroy the Todo item when clicked', function() {
+    this.view.$('.destroy').trigger('click');
+    expect(this.view.$('button').length).toEqual(0);
+  });
+
+  it('double clicking on the title should add a class of editing to the Todo', function() {
+    let $input = this.view.$('label');
+    let e = jQuery.Event('dblclick');
+    $input.addClass(e);
+
+    // this.view.$('label').trigger('dblclick');
+    expect(this.view.$('li')).toHaveClass('.editing');
   });
 });
