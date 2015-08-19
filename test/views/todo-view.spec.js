@@ -26,11 +26,13 @@ describe('TodoView', function(){
   });
 
   it('onToggle() should toggle the state of the Todo item when clicked', function() {
+    let title = 'Test Updated';
+    let $input = this.view.$('.toggle');
     let e = jQuery.Event('click', 'checked');
+    $input.val(title);
 
-    this.view.trigger(e);
+    $input.trigger(e);
 
-    // this.view.$('.toggle').trigger('click');
     expect(this.view.model.get('completed')).toBe(true);
 
   });
@@ -47,5 +49,16 @@ describe('TodoView', function(){
 
     // this.view.$('label').trigger('dblclick');
     expect(this.view.$('li')).toHaveClass('.editing');
+  });
+
+  it('should update the title text when enter is pressed', function() {
+    let title = 'Test Updated';
+    let $input = this.view.$('.edit');
+    let e = jQuery.Event('keyup', { keyCode: 13 });
+    $input.val(title);
+
+    $input.trigger(e);
+
+    expect(this.model.get('title')).toEqual(title);
   });
 });
